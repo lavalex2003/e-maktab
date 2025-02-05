@@ -1,0 +1,11 @@
+{
+    "name": "E-Maktab Integration",
+    "domain": "emaktab",
+    "homeassistant": "2025.1.0",
+    "render_readme": true,
+    "country": "UZ",
+    "documentation": "https://github.com/lavalex2003/e-maktab/wiki",
+    "issue_tracker": "https://github.com/lavalex2003/e-maktab/issues",
+    "codeowners": ["@lavalex2003"],
+    "requirements": []
+}
