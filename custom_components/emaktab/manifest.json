@@ -1,0 +1,9 @@
+{
+    "domain": "emaktab",
+    "name": "E-Maktab Integration",
+    "version": "1.0",
+    "config_flow": true,
+    "requirements": ["requests"],
+    "codeowners": ["@your_github"],
+    "iot_class": "cloud_polling"
+}
