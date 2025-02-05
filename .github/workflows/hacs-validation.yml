@@ -1,0 +1,21 @@
+name: Validate with HACS
+
+on: 
+  push:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  hacs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+      - name: Install hacs-cli
+        run: pip install hacs-cli
+      - name: Run validation
+        run: hacs validate
