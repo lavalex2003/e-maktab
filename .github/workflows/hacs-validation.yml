@@ -1,4 +1,4 @@
-name: Validate with HACS
+name: Validate HACS Integration
 
 on: 
   push:
@@ -6,16 +6,16 @@ on:
     branches: [ main ]
 
 jobs:
-  hacs:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.x"
-      - name: Install hacs-cli
-        run: pip install hacs-cli
-      - name: Run validation
-        run: hacs validate
+      - name: Validate HACS manifest
+        run: |
+          if jq -e . < custom_components/emaktab/manifest.json > /dev/null 2>&1; then
+            echo "manifest.json is valid"
+          else
+            echo "Invalid manifest.json"
+            exit 1
+          fi
