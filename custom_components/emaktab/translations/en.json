@@ -1,0 +1,13 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "E-Maktab Integration",
+                "description": "Enter your E-Maktab login credentials."
+            }
+        },
+        "error": {
+            "auth": "Invalid username or password"
+        }
+    }
+}
