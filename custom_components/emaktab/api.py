@@ -5,6 +5,9 @@ class EMaktabAPI:
     def __init__(self, username, password):
         self.username = username
         self.password = password
+        self.school_id = school_id
+        self.person_id = person_id
+        self.group_id = group_id
         self.session = requests.Session()
 
     def login(self):
