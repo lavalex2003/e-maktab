@@ -29,15 +29,17 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     # Проверяем подключение перед вызовом async_forward_entry_setup
     try:
-        if not await api.login():
+        success = await api.login()
+        if not success:
             raise ConfigEntryNotReady("Ошибка авторизации в E-Maktab")
     except Exception as e:
         _LOGGER.error(f"Ошибка при подключении к E-Maktab: {e}")
         raise ConfigEntryNotReady from e
 
+    # Сохраняем API-объект в hass.data
     hass.data[DOMAIN][entry.entry_id] = api
 
-    # Вызываем async_forward_entry_setup только если подключение успешно
+    # Теперь сенсоры можно загружать, так как API работает
     await hass.config_entries.async_forward_entry_setup(entry, "sensor")
 
     return True
@@ -46,5 +48,5 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Удаление интеграции."""
     if entry.entry_id in hass.data[DOMAIN]:
         del hass.data[DOMAIN][entry.entry_id]
-    
+
     return await hass.config_entries.async_forward_entry_unload(entry, "sensor")
