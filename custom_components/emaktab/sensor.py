@@ -1,5 +1,6 @@
 from datetime import timedelta
 import logging
+import aiohttp
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from homeassistant.components.sensor import SensorEntity
@@ -16,14 +17,16 @@ async def async_setup_entry(hass, entry, async_add_entities):
     school_id = entry.data[CONF_SCHOOL_ID]
     group_id = entry.data[CONF_GROUP_ID]
 
-    api = EMaktabAPI(username, password, person_id, school_id, group_id)
-    if not api.login():
+    session = aiohttp.ClientSession()
+    api = EMaktabAPI(username, password, person_id, school_id, group_id, session)
+    
+    if not await api.login():
         _LOGGER.error("Не удалось войти в E-Maktab")
         return
 
     async def async_update_data():
         """Получение данных"""
-        data = api.get_schedule()
+        data = await api.get_schedule()
         if not data:
             raise UpdateFailed("Ошибка обновления данных")
         return data
@@ -38,9 +41,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
     await coordinator.async_config_entry_first_refresh()
 
-    sensors = []
-    for i in range(8):
-        sensors.append(EMaktabSensor(coordinator, i))
+    sensors = [EMaktabSensor(coordinator, i) for i in range(8)]
     
     async_add_entities(sensors, True)
 
@@ -50,8 +51,8 @@ class EMaktabSensor(SensorEntity):
     def __init__(self, coordinator, index):
         self.coordinator = coordinator
         self.index = index
-        self._attr_name = f"E-Maktab {CONF_USERNAME} Lesson {index+1}"
-        self._attr_unique_id = f"emaktab_{CONF_USERNAME}_lesson_{index+1}"
+        self._attr_name = f"E-Maktab Lesson {index+1}"
+        self._attr_unique_id = f"emaktab_lesson_{index+1}"
 
     @property
     def state(self):
