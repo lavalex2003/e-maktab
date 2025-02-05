@@ -1,6 +1,6 @@
 import aiohttp
 import logging
-import time
+import datetime
 from yarl import URL
 from .const import LOGIN_URL, SCHEDULE_URL
 
@@ -47,10 +47,10 @@ class EMaktabAPI:
         if not self.logged_in:
             _LOGGER.warning("⚠️ Сессия истекла, повторная авторизация...")
             await self.login()
-
+        timestamp = int(datetime.datetime.combine(datetime.date.today(), datetime.time.min).timestamp())
         url = URL(SCHEDULE_URL).with_path(
             f"/api/userfeed/persons/{self.person_id}/schools/{self.school_id}/groups/{self.group_id}/schedule"
-        ).with_query(date=int(time.time()), takeDays=1)
+        ).with_query(date=timestamp, takeDays=1)
 
         try:
             async with self.session.get(url) as response:
