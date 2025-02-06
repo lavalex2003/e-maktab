@@ -17,7 +17,7 @@ class EMaktabAPI:
         self.school_id = school_id
         self.group_id = group_id
         self.session = session
-        self.logged_in = False  # ✅ Добавлено!
+        self.logged_in = False
 
     async def login(self):
         """Авторизация и сохранение cookie."""
