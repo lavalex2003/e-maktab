@@ -1,7 +1,7 @@
 {
     "domain": "emaktab",
     "name": "E-Maktab Integration",
-    "version": "2025.2.8",
+    "version": "2025.2.9",
     "config_flow": true,
     "requirements": ["requests"],
     "codeowners": ["@lavalex2003"],
