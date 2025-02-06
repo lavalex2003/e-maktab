@@ -33,12 +33,16 @@ class EMaktabAPI:
                 "Captcha.Id": "639dcede-f3e1-4e2f-8ef2-17f5f53aaca6"
                 
             }
-            async with self.session.post(LOGIN_URL, data=data) as response:
+            headers = {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+            
+            async with self.session.post(LOGIN_URL, data=data, headers=headers) as response:
                 _LOGGER.info("Попытка авторизации в E-Maktab")
                 if response.status == 200:
                     _LOGGER.info("✅ Успешная авторизация в E-Maktab")
                     self.logged_in = True
-                    _LOGGER.info(f"Заголовок авторизации: {response.headers}")
+                    _LOGGER.warning(f"Заголовок авторизации: {response.headers}")
                     return True
                 else:
                     _LOGGER.error(f"❌ Ошибка авторизации: {response.status}")
@@ -50,7 +54,7 @@ class EMaktabAPI:
             return False
 
     async def get_schedule(self):
-        """Получение расписания."""
+        _LOGGER.info("Попытка получения расписания")
         if not self.logged_in:
             _LOGGER.warning("⚠️ Сессия истекла, повторная авторизация...")
             await self.login()
@@ -66,7 +70,7 @@ class EMaktabAPI:
                     if "application/json" in content_type:
                         return await response.json()
                     else:
-                        _LOGGER.error(f"❌ Ошибка: Неправильный Content-Type ({content_type})")
+                        _LOGGER.error(f"❌ Ошибка: Неправильный Content-Type ({content_type}) URL: {url}")
                         return None
                 else:
                     _LOGGER.error(f"❌ Ошибка запроса расписания: {response.status}")
