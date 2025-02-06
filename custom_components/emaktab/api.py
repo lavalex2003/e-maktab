@@ -27,11 +27,18 @@ class EMaktabAPI:
                 "password": self.password,
                 "captcha.id": "639dcede-f3e1-4e2f-8ef2-17f5f53aaca6",
                 "exceededAttempts": "false",
+                "ReturnUrl": "",
+                "FingerprintId": "",
+                "Captcha.Input": "",
+                "Captcha.Id": "639dcede-f3e1-4e2f-8ef2-17f5f53aaca6"
+                
             }
             async with self.session.post(LOGIN_URL, data=data) as response:
+                _LOGGER.info("Попытка авторизации в E-Maktab")
                 if response.status == 200:
                     _LOGGER.info("✅ Успешная авторизация в E-Maktab")
                     self.logged_in = True
+                    _LOGGER.info(f"Заголовок авторизации: {response.headers}")
                     return True
                 else:
                     _LOGGER.error(f"❌ Ошибка авторизации: {response.status}")
@@ -47,7 +54,7 @@ class EMaktabAPI:
         if not self.logged_in:
             _LOGGER.warning("⚠️ Сессия истекла, повторная авторизация...")
             await self.login()
-        timestamp = int(datetime.datetime.combine(datetime.date.today(), datetime.time.min).timestamp())
+        timestamp = int(datetime.datetime.combine(datetime.date.today(), datetime.time.min).timestamp()) + 18000 #Добавляем 5 часов
         url = URL(SCHEDULE_URL).with_path(
             f"/api/userfeed/persons/{self.person_id}/schools/{self.school_id}/groups/{self.group_id}/schedule"
         ).with_query(date=timestamp, takeDays=1)
