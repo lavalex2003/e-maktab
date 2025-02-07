@@ -29,9 +29,8 @@ class EMaktabAPI:
             #     "ReturnUrl": "",
             #     "FingerprintId": "",
             #     "Captcha.Input": "",
-            #     "Captcha.Id": "639dcede-f3e1-4e2f-8ef2-17f5f53aaca6"
-                
-            }
+            #     "Captcha.Id": "639dcede-f3e1-4e2f-8ef2-17f5f53aaca6"                
+            # }
             payload = f"exceededAttempts=False&ReturnUrl=&FingerprintId=&login={self.username}&password={self.password}&Captcha.Input=&Captcha.Id=639dcede-f3e1-4e2f-8ef2-17f5f53aaca6"
             headers = {
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -43,8 +42,8 @@ class EMaktabAPI:
                 _LOGGER.info(f"headers {headers}")
                 if response.status == 200:
                     _LOGGER.info("✅ Успешная авторизация в E-Maktab")
-                    self.logged_in = True
                     _LOGGER.warning(f"Заголовок авторизации: {response.headers}")
+                    self.logged_in = True
                     return True
                 else:
                     _LOGGER.error(f"❌ Ошибка авторизации: {response.status}")
