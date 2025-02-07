@@ -39,6 +39,8 @@ class EMaktabAPI:
             
             async with self.session.post(LOGIN_URL, data=payload, headers=headers) as response:
                 _LOGGER.info("Попытка авторизации в E-Maktab")
+                _LOGGER.info(f"payload {payload}")
+                _LOGGER.info(f"headers {headers}")
                 if response.status == 200:
                     _LOGGER.info("✅ Успешная авторизация в E-Maktab")
                     self.logged_in = True
@@ -55,7 +57,7 @@ class EMaktabAPI:
 
     async def get_schedule(self):
         _LOGGER.info("Попытка получения расписания")
-        if not self.logged_in:
+        if not self.logged_in == True:
             _LOGGER.warning("⚠️ Сессия истекла, повторная авторизация...")
             await self.login()
         timestamp = int(datetime.datetime.combine(datetime.date.today(), datetime.time.min).timestamp()) + 18000 #Добавляем 5 часов
