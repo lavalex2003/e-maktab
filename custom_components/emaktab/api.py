@@ -22,15 +22,14 @@ class EMaktabAPI:
     async def login(self):
         """Авторизация и сохранение cookie."""
         try:
-            data = {
-                "username": self.username,
-                "password": self.password,
-                "captcha.id": "639dcede-f3e1-4e2f-8ef2-17f5f53aaca6",
-                "exceededAttempts": "false",
-                "ReturnUrl": "",
-                "FingerprintId": "",
-                "Captcha.Input": "",
-                "Captcha.Id": "639dcede-f3e1-4e2f-8ef2-17f5f53aaca6"
+            # data = {
+            #     "username": self.username,
+            #     "password": self.password,
+            #     "exceededAttempts": "false",
+            #     "ReturnUrl": "",
+            #     "FingerprintId": "",
+            #     "Captcha.Input": "",
+            #     "Captcha.Id": "639dcede-f3e1-4e2f-8ef2-17f5f53aaca6"
                 
             }
             payload = f"exceededAttempts=False&ReturnUrl=&FingerprintId=&login={self.username}&password={self.password}&Captcha.Input=&Captcha.Id=639dcede-f3e1-4e2f-8ef2-17f5f53aaca6"
